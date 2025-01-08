@@ -1,0 +1,7 @@
+<?php 
+/*
+    SERVER  : SERVER NAME
+    DB      : DB NAME
+    SUMMERIZE CONNECTION : EG.MAIN DB TO APPLICATION 
+*/
+

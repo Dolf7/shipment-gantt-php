@@ -1,0 +1,2 @@
+<?php 
+/* AUTHENTHICATION FOR LOGIN */
