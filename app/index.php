@@ -38,6 +38,8 @@
                     include('./pages/chart-inline.php');
                 } else if ($page == 'gantt-test') {
                     include('./pages/gantt-test.php');
+                } else if ($page == 'schedule-templates') {
+                    include('./pages/schedule/templates.php');
                 } else {
                     include('./pages/not-found.php');
                 }

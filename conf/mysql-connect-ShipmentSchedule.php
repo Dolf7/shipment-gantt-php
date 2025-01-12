@@ -3,7 +3,11 @@
 Connection To ShipmentSchedule Databse
 */
 
-$env = parse_ini_file('../.env');
+if (file_exists("../.env")) {
+    $env = parse_ini_file('../.env');
+} else if (file_exists("../../../.env")) {
+    $env = parse_ini_file('../../../.env');
+}
 
 $servername = $env["shipment-db-server"];
 $dbName = $env["shipment-db-name"];

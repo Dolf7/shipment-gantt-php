@@ -45,6 +45,28 @@
                           </li>
                       </ul>
                   </li>
+                  <!-- Schedules -->
+                  <li class="nav-item <?php if ($page == 'schedule-templates') echo 'menu-open'; ?>"">
+                      <a href=" #" class="nav-link <?php if ($page == 'schedule-templates') echo 'active'; ?>">
+                      <i class="nav-icon fas fa-table"></i>
+                      <p>
+                          Schedules
+                          <i class="right fas fa-angle-left"></i>
+                      </p>
+                      </a>
+                      <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                              <a href="./index.php?page=schedule-templates" class="nav-link <?php
+                                                                                            if ($page == 'schedule-templates') echo 'active';
+                                                                                            ?>">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Template</p>
+                              </a>
+                          </li>
+                      </ul>
+                  </li>
+
+
                   <!-- TABLE -->
                   <li class="nav-item <?php if ($page == 'data-table') echo 'menu-open'; ?>"">
                       <a href=" #" class="nav-link <?php if ($page == 'data-table') echo 'active'; ?>">
