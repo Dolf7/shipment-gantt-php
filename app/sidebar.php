@@ -2,8 +2,8 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="./index.php?page=profile" class="brand-link mt-2 pb-3 mb-3"" style=" text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center">
-          <img width="90%" height="auto" src="../assets/img/itron.png" alt="Logo" style="opacity:1">
-          <span class="brand-text font-weight-light">Application name</span>
+          <!-- <img width="90%" height="auto" src="../assets/img/itron.png" alt="Logo" style="opacity:1"> -->
+          <span class="brand-text font-weight-light">Shipment on Delivery</span>
       </a>
 
       <!-- Sidebar -->

@@ -3,7 +3,7 @@
 //Later Create Module For Checking Credentials
 $redirect_link = "../../index.php?page=schedule-templates";
 
-if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+if ($_SERVER['REQUEST_METHOD'] != 'GET') {
 
     //Set Response to 405 : Method Not Allowed
     http_response_code(405);
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 }
 
 // Checking Params
-if (!isset($_POST['name'])) {
+if (!isset($_GET['id'])) {
     //Set Response to 400 : Bad Request
     http_response_code(400);
 
@@ -29,37 +29,27 @@ if (!isset($_POST['name'])) {
 
 include('../../../conf/mysql-connect-ShipmentSchedule.php');
 
-$name = $_POST['name'];
+$id = $_GET['id'];
 
-$query_insert_templates = "INSERT INTO schedule_template (name) VALUES (:name)";
+$query_delete_templates = "DELETE FROM schedule_template WHERE id=:id";
 
 try {
-    $sth  = $conn->prepare($query_insert_templates);
-    $sth->bindParam(":name", $name, PDO::PARAM_STR);
+    $sth  = $conn->prepare($query_delete_templates);
+    $sth->bindParam(":id", $id, PDO::PARAM_INT);
     $sth->execute();
 } catch (Exception $e) {
     http_response_code(500);
 
     echo "<script> 
-                alert('Failed to Creat Template, Try Again : $e'); 
+                alert('Failed to Delete Template, Try Again : $e'); 
                 document.location='$redirect_link'; 
             </script>";
     die();
 }
 
-echo "<br>$name";
-$query_get_id_template = "SELECT * FROM schedule_template WHERE name=:name LIMIT 1";
-
-$sth2  = $conn->prepare($query_get_id_template);
-$sth2->bindParam(":name", $name, PDO::PARAM_STR);
-$sth2->execute();
-
-$data_res = $sth2->fetch();
-
-$success_redirect_link = "../../index.php?page=schedule-templates_items?id=" . $data_res['id'];
 echo "<script> 
-                alert('Template $name Created'); 
-                document.location='$success_redirect_link'; 
-            </script>";
+        alert('Template with id $id Deleted'); 
+        document.location='$redirect_link'; 
+        </script>";
 
 die();

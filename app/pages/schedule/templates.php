@@ -85,7 +85,7 @@ $templates_res = $sth->fetchAll(PDO::FETCH_CLASS, "schedule_template");
                                 ?>
                                     <td>
                                         <a href="#" class="btn btn-primary d-flex justify-content-center align-items-center"><i class="fa fa-info"></i> Details</a>
-                                        <a href="#" class="btn btn-danger d-flex justify-content-center align-items-center"><i class="fa fa-trash"></i> Delete</a>
+                                        <a href="./controller/templates/template_delete.php?id=<?php echo $i->id ?>" class="btn btn-danger d-flex justify-content-center align-items-center"><i class="fa fa-trash"></i> Delete</a>
                                     </td>
                                 <?php
                                     echo "</    tr>";

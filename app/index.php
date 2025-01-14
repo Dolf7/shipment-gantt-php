@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gantt Scheduler | Project </title>
+    <title>Shipment on Delivery </title>
     <?php
     include('header.php');
     ?>
