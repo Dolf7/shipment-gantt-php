@@ -47,8 +47,6 @@ try {
 $templates_res = $sth->fetch();
 $templates_items = $sth2->fetchAll();
 
-print_r($templates_items);
-
 ?>
 <!-- Content Header -->
 <section class="content-header">
@@ -90,42 +88,47 @@ print_r($templates_items);
                             <input type="hidden" name="templateId" type="text" value="<?php echo $templates_res['id'] ?>">
                         </div>
                     </div class="col-6">
-
                     <div class="schedule-rows" id="schedules-row">
-                        <div class="row field">
-                            <div class="col-md-3">
-                                <div class="form-group">
+                        <?php
+                        foreach ($templates_items as $key => $schedule) {
+                        ?>
+                            <div class="row field">
+                                <input type="hidden" name="id-<?php echo $key + 1 ?>" value="<?php echo $schedule['id'] ?>">
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="task">Task 1</label>
-                                        <input type="text" name="task-1" id="task-1" class="form-control" value="">
+                                        <div class="form-group">
+                                            <label for="task">Task <?php echo $key + 1 ?></label>
+                                            <input type="text" name="task-<?php echo $key + 1 ?>" id="task-<?php echo $key + 1 ?>" class="form-control" value="<?php echo $schedule['item'] ?>">
+                                        </div>
                                     </div>
-                                </div>
-                            </div><!-- /.col -->
-                            <div class="col-md-3">
-                                <div class="form-group">
+                                </div><!-- /.col -->
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="time">Fix Time (Minute)</label>
-                                        <input type="number" name="totalTime-1" id="totaltime-1" class="form-control" value="">
+                                        <div class="form-group">
+                                            <label for="totalTime">Fix Time (Minute)</label>
+                                            <input type="number" name="totalTime-<?php echo $key + 1 ?>" id="totaltime-<?php echo $key + 1 ?>" class="form-control" value="<?php echo $schedule['FixDurationMinute'] ?>">
+                                        </div>
                                     </div>
-                                </div>
-                            </div><!-- /.col -->
-                            <div class="col-md-3">
-                                <div class="form-group">
+                                </div><!-- /.col -->
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="name">Fix Start Time</label>
-                                        <input type="time" name="startTime-1" id="startTime" class="form-control" value="">
+                                        <div class="form-group">
+                                            <label for="startTime">Fix Start Time</label>
+                                            <input type="time" name="startTime-<?php echo $key + 1 ?>" id="startTime-<?php echo $key + 1 ?>" class="form-control" value="<?php echo $schedule['FixStartTime'] ?>">
+                                        </div>
                                     </div>
-                                </div>
-                            </div><!-- /.col -->
-                            <div class="col-md-3">
-                                <div class="form-group">
+                                </div><!-- /.col -->
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="name">Fix End Time</label>
-                                        <input type="time" name="endTime-1" id="endTime" class="form-control" value="">
+                                        <div class="form-group">
+                                            <label for="endtime">Fix End Time</label>
+                                            <input type="time" name="endTime-<?php echo $key + 1 ?>" id="endTime-<?php echo $key + 1 ?>" class="form-control" value="<?php echo $schedule['FixEndTime'] ?>">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
+                        <?php } ?>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -150,10 +153,11 @@ print_r($templates_items);
         newField.classList.add('field');
 
         newField.innerHTML = `
+            <input type="hidden" name="id-${objectFields.children.length + 1}" value="0">
             <div class="col-md-3">
                 <div class="form-group">
                     <div class="form-group">
-                        <label for="key-1${objectFields.children.length + 1}">Task ${objectFields.children.length + 1}</label>
+                        <label for="task-${objectFields.children.length + 1}">Task ${objectFields.children.length + 1}</label>
                         <input type="text" name="task-${objectFields.children.length + 1}" id="task-${objectFields.children.length + 1}" class="form-control">
                     </div>
                 </div>
@@ -195,6 +199,7 @@ print_r($templates_items);
         const scheduleRows = document.querySelectorAll('.field');
         scheduleRows.forEach((row, index) => {
             const scheduleItem = {
+                id: row.querySelector(`[name="id-${index+1}"]`).value,
                 task: row.querySelector(`[name="task-${index + 1}"]`).value,
                 totalTime: row.querySelector(`[name="totalTime-${index + 1}"]`).value,
                 startTime: row.querySelector(`[name="startTime-${index + 1}"]`).value,
@@ -211,9 +216,8 @@ print_r($templates_items);
 
         console.log(dataToSend);
 
-        // const url = '<?php echo $full_url ?>/gantt/app/controller/templates/templa te_create.php';
-        fetch('./controller/templates/template_item_create.php', {
-                method: 'POST',
+        fetch('./controller/templates/template_item_update.php', {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -221,7 +225,7 @@ print_r($templates_items);
             })
             .then(response => {
                 if (response.ok) {
-                    alert('Template Schedules Created');
+                    alert('Template Schedules Updated');
 
                     window.location.href = '<?php echo $full_url ?>/gantt/app?page=schedule-templates';
                     // Handle successful submission (e.g., display success message, redirect)
@@ -234,7 +238,7 @@ print_r($templates_items);
             })
             .catch(error => {
                 console.error('Error posting object:', error);
-                // Handle error (e.g., display error message)
+                alert("Failed To Create Object, Please Try Again or Contact The Administrator");
             });
     }
 </script>

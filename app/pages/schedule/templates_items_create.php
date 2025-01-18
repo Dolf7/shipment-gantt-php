@@ -209,6 +209,7 @@ $templates_res = $sth->fetch();
             .catch(error => {
                 console.error('Error posting object:', error);
                 // Handle error (e.g., display error message)
+                alert("Failed To Create Object, Please Try Again or Contact The Administrator");
             });
     }
 </script>
