@@ -31,11 +31,30 @@ include('../../../conf/mysql-connect-ShipmentSchedule.php');
 
 $id = $_GET['id'];
 
-$query_delete_templates = "DELETE FROM schedule_template WHERE id=:id";
+$query_delete_templates_item = "DELETE FROM schedule_template_item WHERE templateid=:id";
+
+$stmt = $conn->prepare($query_delete_templates_item);
+$stmt->bindParam(':id', $id);
 
 try {
-    $sth  = $conn->prepare($query_delete_templates);
-    $sth->bindParam(":id", $id, PDO::PARAM_INT);
+    $stmt->execute();
+} catch (Exception $e) {
+    http_response_code(500);
+
+    echo "<script> 
+                alert('Failed to Delete Template, Try Again : $e'); 
+                document.location='$redirect_link'; 
+            </script>";
+    die();
+}
+
+
+$query_delete_templates = "DELETE FROM schedule_template WHERE id=:id";
+
+$sth  = $conn->prepare($query_delete_templates);
+$sth->bindParam(":id", $id, PDO::PARAM_INT);
+
+try {
     $sth->execute();
 } catch (Exception $e) {
     http_response_code(500);

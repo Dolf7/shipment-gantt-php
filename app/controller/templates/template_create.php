@@ -56,9 +56,8 @@ $sth2->execute();
 
 $data_res = $sth2->fetch();
 
-$success_redirect_link = "../../index.php?page=schedule-templates_items?id=" . $data_res['id'];
+$success_redirect_link = "../../index.php?page=schedule-templates-item-create&id=" . $data_res['id'];
 echo "<script> 
-                alert('Template $name Created'); 
                 document.location='$success_redirect_link'; 
             </script>";
 
