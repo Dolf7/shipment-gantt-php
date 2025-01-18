@@ -1,2 +1,1 @@
-<?php 
 /* AUTHENTHICATION FOR LOGIN */

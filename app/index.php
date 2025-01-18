@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gantt Scheduler | Project </title>
+    <title>Shipment on Delivery </title>
     <?php
     include('header.php');
     ?>
@@ -25,6 +25,7 @@
         <!-- MAIN CONTENT -->
         <div class="content-wrapper">
             <?php
+
             if (isset($page)) {
                 if ($page == 'profile') {
                     include('./pages/profile.php');
@@ -38,6 +39,14 @@
                     include('./pages/chart-inline.php');
                 } else if ($page == 'gantt-test') {
                     include('./pages/gantt-test.php');
+                } else if ($page == 'schedule-templates') {
+                    include('./pages/schedule/templates.php');
+                } else if ($page == 'schedule-templates-item-create') {
+                    include('./pages/schedule/templates_items_create.php');
+                } else if ($page == 'schedule-templates-details') {
+                    include('./pages/schedule/templates_items_detail_edit.php');
+                } else if ($page == 'user') {
+                    include('./pages/user/users.php');
                 } else {
                     include('./pages/not-found.php');
                 }

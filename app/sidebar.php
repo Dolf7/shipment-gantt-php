@@ -2,8 +2,8 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="./index.php?page=profile" class="brand-link mt-2 pb-3 mb-3"" style=" text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center">
-          <img width="90%" height="auto" src="../assets/img/itron.png" alt="Logo" style="opacity:1">
-          <span class="brand-text font-weight-light">Application name</span>
+          <!-- <img width="90%" height="auto" src="../assets/img/itron.png" alt="Logo" style="opacity:1"> -->
+          <span class="brand-text font-weight-light">Shipment on Delivery</span>
       </a>
 
       <!-- Sidebar -->
@@ -45,6 +45,28 @@
                           </li>
                       </ul>
                   </li>
+                  <!-- Schedules -->
+                  <li class="nav-item <?php if ($page == 'schedule-templates') echo 'menu-open'; ?>"">
+                      <a href=" #" class="nav-link <?php if ($page == 'schedule-templates') echo 'active'; ?>">
+                      <i class="nav-icon fas fa-table"></i>
+                      <p>
+                          Schedules
+                          <i class="right fas fa-angle-left"></i>
+                      </p>
+                      </a>
+                      <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                              <a href="./index.php?page=schedule-templates" class="nav-link <?php
+                                                                                            if ($page == 'schedule-templates') echo 'active';
+                                                                                            ?>">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Template</p>
+                              </a>
+                          </li>
+                      </ul>
+                  </li>
+
+
                   <!-- TABLE -->
                   <li class="nav-item <?php if ($page == 'data-table') echo 'menu-open'; ?>"">
                       <a href=" #" class="nav-link <?php if ($page == 'data-table') echo 'active'; ?>">
@@ -117,6 +139,7 @@
                           </li>
                       </ul>
                   </li>
+                  
               </ul>
           </nav>
           <!-- /.sidebar-menu -->
