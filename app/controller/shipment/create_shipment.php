@@ -79,6 +79,7 @@ foreach ($shipmentItems as $item) {
 }
 
 http_response_code(201); // Created
+header('Content-Type: application/json');
 echo json_encode(['message' => 'Shipment items created successfully.']);
 
 $conn = null; // Close the database connection

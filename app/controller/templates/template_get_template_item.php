@@ -35,6 +35,7 @@ try {
     $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     http_response_code(200);
+    header('Content-Type: application/json');
     echo json_encode($res);
 } catch (Exception $ex) {
     http_response_code(500);

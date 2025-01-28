@@ -68,6 +68,7 @@ try {
 
 // Success response
 http_response_code(201); // Created
+header('Content-Type: application/json');
 echo json_encode(['message' => 'Schedule items created successfully.']);
 
 $conn = null; // Close the database connection
