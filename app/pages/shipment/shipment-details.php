@@ -23,26 +23,48 @@ require_once('./pages/schedule/schedule_objects.php');
 include('../conf/mysql-connect-ShipmentSchedule.php');
 
 ///Query for Get All Templates
-$query_get_templates = "SELECT * FROM schedule_template";
+$query_get_items = "SELECT st.id AS templateId
+                            ,st.name AS templateName
+                            ,s.id AS scheduleId
+                            ,s.scheduleDate
+                            ,s.name
+                            ,i.id AS itemid
+                            ,i.templateitemid
+                            ,sti.item AS itemName
+                            ,i.durationMinute
+                            ,i.startTime
+                            ,i.endTime
+                        FROM schedule_schedules AS s
+                        JOIN schedule_schedules_item AS i ON s.id = i.schedulesid
+                        JOIN schedule_template AS st ON s.templateid = st.id
+                        JOIN schedule_template_item AS sti ON i.templateitemid = sti.id
+                        WHERE s.id = :id
+                        ";
 
-$sth = $conn->prepare($query_get_templates);
+$sth = $conn->prepare($query_get_items);
+$sth->bindParam(':id', $shipment_id, PDO::PARAM_INT);
 $sth->execute();
 
 $templates_res = $sth->fetchAll();
+// print_r($templates_res);
 
+$template_id = $templates_res[0]['templateId'];
+$template_name = $templates_res[0]['templateName'];
+$scheduleName = $templates_res[0]['name'];
+$scheduleDate = $templates_res[0]['scheduleDate'];
 ?>
 
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Shipment Create</h1>
+                <h1>Shipment Details</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
                     <li class="breadcrumb-item">Shipment</li>
-                    <li class="breadcrumb-item active">Shipment</li>
+                    <li class="breadcrumb-item active">Shipment Details</li>
                 </ol>
             </div>
         </div>
@@ -62,16 +84,11 @@ $templates_res = $sth->fetchAll();
                             <div class="col-6 ">
                                 <div class="form-group">
                                     <label for="name">Select Template</label>
-                                    <select name="template-select" id="template-select" class="form-control select2">
-                                        <option value="" selected disabled>Select Template</option>
-                                        <?php
-                                        foreach ($templates_res as $template) {
-                                            echo "<option value='" . $template['id'] . "'>" . $template['name'] . "</option>";
-                                        }
-                                        ?>
+                                    <select name="template-select" id="template-select" class="form-control select2" readonly>
+                                        <option selected value="<?php echo $template_id ?>"><?php echo $template_name ?></option>
                                     </select>
                                 </div>
-                                <button type="button" id="select-tempalte-btn" class="btn btn-primary" onclick="templateSelected()">Select</button>
+                                <button type="button" id="select-tempalte-btn" class="btn btn-primary" disabled>Select</button>
                             </div class="col-6">
                         </form>
                         <hr />
@@ -79,13 +96,21 @@ $templates_res = $sth->fetchAll();
                             <h3 class="card-title">Shipment Schedule</h3>
                         </div>
                         <form action="" id="mainForm" method="">
-                            <div class="col-6 mb-3">
-                                <div style="display: flex; flex-direction:row; justify-content:space-between">
-                                    <label for="shipment-date">Date</label>
-                                    <input type="date" class="form-control mx-5" id="shipment-date" name="shipment-date" />
+                            <div class="col-12 mb-3">
+                                <div style="display: flex; flex-direction:row; justify-content:flex-start">
+                                    <input type="hidden" class="form-control" id="shipment-id" name="shipment-id" value="<?php echo $shipment_id ?>" />
+                                    <div style="width: 25%;" class="mr-2">
+                                        <label for="shipment-date">Date</label>
+                                        <input type="date" class="form-control" id="shipment-date" name="shipment-date" value="<?php echo $scheduleDate ?>" />
+                                    </div>
+                                    <div style="width: 25%;" class="mx-2">
+                                        <label for="shipment-name">Name</label>
+                                        <input type="text" class="form-control" id="shipment-name" name="shipment-name" value="<?php echo $scheduleName ?>" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="schedule-rows-header" id="schedules-row-header">
+
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
@@ -119,9 +144,50 @@ $templates_res = $sth->fetchAll();
                             </div>
                             <div class="schedule-rows" id="schedules-row">
                                 <!-- Will Fill With Forms Input Items -->
+                                <?php foreach ($templates_res as $key => $item) { ?>
+                                    <div class="row field">
+
+                                        <div class="col-md-3">
+                                            <input type="hidden" id="id-<?php echo ($key + 1) ?>" name="id-<?php echo ($key + 1) ?>"
+                                                value="<?php echo ($item['itemid']) ?>" />
+                                            <div class="form-group">
+                                                <div class="form-group">
+                                                    <input type="text" name="task-<?php echo ($key + 1) ?>" id="task-<?php echo ($key + 1) ?>" class="form-control" value="<?php echo $item['itemName'] ?>" readonly>
+                                                </div>
+                                            </div>
+                                        </div><!-- /.col -->
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <div class="form-group">
+                                                    <input type="number" name="totalTime-<?php echo ($key + 1) ?>"
+                                                        id="totaltime-<?php echo ($key + 1) ?>" class="form-control"
+                                                        value="<?php echo $item['durationMinute'] ?>">
+                                                </div>
+                                            </div>
+                                        </div><!-- /.col -->
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <div class="form-group">
+                                                    <input type="time" name="startTime-<?php echo ($key + 1) ?>"
+                                                        id="startTime-<?php echo ($key + 1) ?>" class="form-control"
+                                                        value="<?php echo $item['startTime'] ?>">
+                                                </div>
+                                            </div>
+                                        </div><!-- /.col -->
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <div class="form-group">
+                                                    <input type="time" name="endTime-<?php echo ($key + 1) ?>"
+                                                        id="endTime-<?php echo ($key + 1) ?>" class="form-control"
+                                                        value="<?php echo $item['endTime'] ?>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
                             </div>
                             <div class="col-md-6">
-                                <button type="button" class="btn btn-primary" id="postObject" onclick="createData()" disabled>Submit</button>
+                                <button type="button" class="btn btn-primary" id="postObject" onclick="createAndSentData()">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -132,125 +198,7 @@ $templates_res = $sth->fetchAll();
 </section>
 
 <script>
-    function templateSelected() {
-        clearMainForm();
-        getTemplateItems();
-        submitBtnToggle();
-    }
-
-    function submitBtnToggle() {
-        document.getElementById('postObject').disabled = false;
-    }
-
-    function clearMainForm() {
-        const objectFields = document.getElementById('schedules-row');
-        while (objectFields.firstChild) {
-            objectFields.removeChild(objectFields.firstChild);
-        }
-    }
-
-    function getTemplateItems() {
-        const templateSelect = document.getElementById('template-select');
-        const selectedTemplateId = templateSelect.value;
-
-        if (selectedTemplateId == undefined || selectedTemplateId == null) {
-            alert("Selected Tempalte Item is Undefined || NULL" + selectedTemplateId);
-            return;
-        }
-
-        url = './controller/templates/template_get_template_item.php?id=' + selectedTemplateId;
-
-        fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    console.log(response);
-                    return response.json();
-                } else {
-                    alert("Failed To Select Object, Please Try Again");
-                    console.error('Error posting object:', response.status);
-                }
-            })
-            .then(data => {
-                setItemsDataToForm(data);
-            });
-
-    }
-
-    function setItemsDataToForm(datas) {
-        if (datas.length > 0) {
-            datas.forEach(data => {
-                addField(data);
-            });
-        }
-    }
-
-    function addField(data) {
-        const id = data.id ?? 0;
-        const task = data.item ?? "";
-
-        const duration = data.FixDurationMinute ?? 0;
-        const durationDisabled = duration != 0;
-
-        const startTime = data.FixStartTime ?? null;
-        const startTimeDisabled = startTime != null;
-
-        const endTime = data.FixEndTime ?? null
-        const endTimeDisabled = endTime != null;
-
-        const objectFields = document.getElementById('schedules-row');
-
-        const newField = document.createElement('div');
-        newField.classList.add('row');
-        newField.classList.add('field');
-
-        newField.innerHTML = `
-            <div class="col-md-3">
-                <input type="hidden" id="id-${objectFields.children.length + 1}" name="id-${objectFields.children.length + 1}"
-                value="${id}">
-                <div class="form-group">
-                    <div class="form-group">
-                        <input type="text" name="task-${objectFields.children.length + 1}" id="task-${objectFields.children.length + 1}" class="form-control" value="${task}" readonly>
-                    </div>
-                </div>
-            </div><!-- /.col -->
-            <div class="col-md-3">
-                <div class="form-group">
-                    <div class="form-group">
-                        <input type="number" name="totalTime-${objectFields.children.length + 1}" 
-                            id="totaltime-${objectFields.children.length + 1}" class="form-control"
-                            value="${duration}" ${durationDisabled ? 'disabled' : ''}>
-                    </div>
-                </div>
-            </div><!-- /.col -->
-            <div class="col-md-3">
-                <div class="form-group">
-                    <div class="form-group">
-                        <input type="time" name="startTime-${objectFields.children.length + 1}" 
-                        id="startTime-${objectFields.children.length + 1}" class="form-control"
-                        value="${startTime}"  ${startTimeDisabled ? 'disabled' : ''}>
-                    </div>
-                </div>
-            </div><!-- /.col -->
-            <div class="col-md-3">
-                <div class="form-group">
-                    <div class="form-group">
-                        <input type="time" name="endTime-${objectFields.children.length + 1}" 
-                        id="endTime-${objectFields.children.length + 1}" class="form-control"
-                        value="${endTime}" ${endTimeDisabled ? 'readonly' : ''}>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        objectFields.appendChild(newField);
-    }
-
-    function createData() {
+    function createAndSentData() {
         const form = document.getElementById('mainForm');
         const formData = new FormData(form);
         const shipmentData = [];
@@ -269,10 +217,29 @@ $templates_res = $sth->fetchAll();
 
         const status = checkData(shipmentData);
         if (!status) return;
+
+        shipmentId = document.getElementById('shipment-id').value;
+        shipmentDate = document.getElementById('shipment-date').value;
+        shipmentName = document.getElementById('shipment-name').value;
+        templateId = document.getElementById('template-select').value;
+
+        fullData = {
+            id: shipmentId,
+            date: shipmentDate,
+            name: shipmentName,
+            templateId: templateId,
+            scheduleItem: shipmentData
+        }
+
+        if (!sentData(fullData)) {
+            return;
+        }
+
+        window.location.href = '<?php echo $full_url ?>/gantt/app?page=shipment';
+        return;
     }
 
     function checkData(datas) {
-        console.log(datas);
         for (let i = 0; i < datas.length; i++) {
             const data = datas[i];
             if (data.id == null || data.task == null || data.totalTime == '' || data.startTime == '' || data.endTime == '') {
@@ -280,5 +247,35 @@ $templates_res = $sth->fetchAll();
                 return false;
             }
         }
+        return true;
+    }
+
+    function sentData(datas) {
+        console.log(datas);
+        url = './controller/shipment/update_shipment.php';
+
+        fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(datas),
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Shipment Updated');
+                    location.reload();
+                    return true;
+                } else {
+                    alert("Failed To Update Shipment, Please Try Again or Contact The Administrator");
+                    console.error('Error posting object:', response.status);
+                    return false;
+                }
+            })
+            .catch(error => {
+                console.error('Error posting object:', error);
+                alert("Failed To Update Shipment, Please Try Again or Contact The Administrator");
+                return false;
+            });
     }
 </script>

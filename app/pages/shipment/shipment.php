@@ -66,7 +66,7 @@ $templates_res = $sth->fetchAll(PDO::FETCH_CLASS, "shipment_schedules");
                                     echo "<td>" . $i->scheduleDate . "</td>";
                                 ?>
                                     <td>
-                                        <a href="./index.php?page=shipment-details&id=<?php echo $i->id ?>" class="btn btn-primary d-flex justify-content-center align-items-center"><i class="fa fa-info"></i> Details</a>
+                                        <a href="./index.php?page=shipment-detail&id=<?php echo $i->id ?>" class="btn btn-primary d-flex justify-content-center align-items-center"><i class="fa fa-info"></i> Details</a>
 
                                         <a href="./controller/shipment/delete_shipment.php?id=<?php echo $i->id ?>" class="btn btn-danger d-flex justify-content-center align-items-center" onclick="return confirm('Are you sure you want to delete this shipment?');"><i class="fa fa-trash"></i> Delete</a>
                                     </td>
