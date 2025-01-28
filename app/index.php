@@ -45,6 +45,12 @@
                     include('./pages/schedule/templates_items_create.php');
                 } else if ($page == 'schedule-templates-details') {
                     include('./pages/schedule/templates_items_detail_edit.php');
+                } else if ($page == 'shipment') {
+                    include('./pages/shipment/shipment.php');
+                } else if ($page == 'shipment-create') {
+                    include('./pages/shipment/shipment-create.php');
+                } else if ($page == 'shipment-detail'){
+                    include('./pages/shipment/shipment-details.php');
                 } else if ($page == 'user') {
                     include('./pages/user/users.php');
                 } else {

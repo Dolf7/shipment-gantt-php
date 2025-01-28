@@ -92,7 +92,7 @@
     });
 </script>
 
-<!-- <script>
+<script>
     $.AdminLTESidebarTweak = {};
 
     $.AdminLTESidebarTweak.options = {
@@ -274,4 +274,4 @@
         myDropzone.removeAllFiles(true)
     }
     // DropzoneJS Demo Code End
-</script> -->
+</script>

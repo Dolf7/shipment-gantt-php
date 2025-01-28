@@ -1,23 +1,23 @@
 <?php
 
 //Tread include the like, this file in app/index.html file 
-require_once('./pages/schedule/schedule_objects.php');
+require_once('./pages/shipment/shipment_objects.php');
 include('../conf/mysql-connect-ShipmentSchedule.php');
 
 ///Query for Get All Templates
-$query_get_templates = "SELECT * FROM schedule_template";
+$query_get_templates = "SELECT * FROM schedule_schedules";
 
 $sth = $conn->prepare($query_get_templates);
 $sth->execute();
 
-$templates_res = $sth->fetchAll(PDO::FETCH_CLASS, "schedule_template");
+$templates_res = $sth->fetchAll(PDO::FETCH_CLASS, "shipment_schedules");
 ?>
 <!-- Content Header -->
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Shipment Schedules Template</h1>
+                <h1>Shipment Schedules</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -34,44 +34,25 @@ $templates_res = $sth->fetchAll(PDO::FETCH_CLASS, "schedule_template");
 <!-- Contents -->
 <section class="content">
     <div class="container-fluid">
-        <div class="card card-primary">
-            <div class="card-header">
-                <h3 class="card-title">Create Template</h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="card-body">
-                <form action="./controller/templates/template_create.php" method="POST">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label for="name">Template Name</label>
-                            <input type="text" name="name" id="inputName" class="form-control">
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div class="col-6">
-                </form>
-            </div>
-        </div>
-
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title"></h3>
+                    <div class="card-header row" style="justify-content:space-between; width:100%">
+                        <h3 class="card-title">Shipment</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
+                        <div class="row" style="justify-content: flex-end; margin:0px 0px 1vw">
+                            <a href="./?page=shipment-create" class="btn btn-primary">
+                                Create New Shipment
+                            </a>
+                        </div>
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>no</th>
                                     <th>Name</th>
+                                    <th>Date</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -82,10 +63,12 @@ $templates_res = $sth->fetchAll(PDO::FETCH_CLASS, "schedule_template");
                                     echo "<tr>";
                                     echo "<td>" . $no . "</td>";
                                     echo "<td>" . $i->name . "</td>";
+                                    echo "<td>" . $i->scheduleDate . "</td>";
                                 ?>
                                     <td>
-                                        <a href="./index.php?page=schedule-templates-details&id=<?php echo $i->id ?>" class="btn btn-primary d-flex justify-content-center align-items-center"><i class="fa fa-info"></i> Details</a>
-                                        <a href="./controller/templates/template_delete.php?id=<?php echo $i->id ?>" class="btn btn-danger d-flex justify-content-center align-items-center" onclick="return confirm('Are you sure you want to delete this Template?');"><i class="fa fa-trash"></i> Delete</a>
+                                        <a href="./index.php?page=shipment-details&id=<?php echo $i->id ?>" class="btn btn-primary d-flex justify-content-center align-items-center"><i class="fa fa-info"></i> Details</a>
+
+                                        <a href="./controller/shipment/delete_shipment.php?id=<?php echo $i->id ?>" class="btn btn-danger d-flex justify-content-center align-items-center" onclick="return confirm('Are you sure you want to delete this shipment?');"><i class="fa fa-trash"></i> Delete</a>
                                     </td>
                                 <?php
                                     echo "</    tr>";

@@ -50,10 +50,20 @@
                       <a href=" #" class="nav-link <?php if ($page == 'schedule-templates') echo 'active'; ?>">
                       <i class="nav-icon fas fa-table"></i>
                       <p>
-                          Schedules
+                          Shipment
                           <i class="right fas fa-angle-left"></i>
                       </p>
                       </a>
+                      <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                              <a href="./index.php?page=shipment" class="nav-link <?php
+                                                                                    if ($page == 'shipment') echo 'active';
+                                                                                    ?>">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Shipment</p>
+                              </a>
+                          </li>
+                      </ul>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
                               <a href="./index.php?page=schedule-templates" class="nav-link <?php
@@ -139,7 +149,7 @@
                           </li>
                       </ul>
                   </li>
-                  
+
               </ul>
           </nav>
           <!-- /.sidebar-menu -->
