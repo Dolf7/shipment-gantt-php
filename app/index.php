@@ -29,23 +29,27 @@
             if (isset($page)) {
                 if ($page == 'profile') {
                     include('./pages/profile.php');
-                } else if ($page == 'form-basic') {
-                    include('./pages/form-basic.php');
-                } else if ($page == 'data-table') {
-                    include('./pages/table-basic.php');
-                } else if ($page == 'chart-basic') {
-                    include('./pages/chart-basic.php');
-                } else if ($page == 'chart-inline') {
-                    include('./pages/chart-inline.php');
                 } else if ($page == 'gantt-test') {
                     include('./pages/gantt-test.php');
-                } else if ($page == 'schedule-templates') {
+                }
+                // TEMPLATES
+                else if ($page == 'schedule-templates') {
                     include('./pages/schedule/templates.php');
                 } else if ($page == 'schedule-templates-item-create') {
                     include('./pages/schedule/templates_items_create.php');
                 } else if ($page == 'schedule-templates-details') {
                     include('./pages/schedule/templates_items_detail_edit.php');
-                } else if ($page == 'user') {
+                }
+                // SHIPMENT
+                else if ($page == 'shipment') {
+                    include('./pages/shipment/shipment.php');
+                } else if ($page == 'shipment-create') {
+                    include('./pages/shipment/shipment-create.php');
+                } else if ($page == 'shipment-detail') {
+                    include('./pages/shipment/shipment-details.php');
+                }
+                // USER
+                else if ($page == 'user') {
                     include('./pages/user/users.php');
                 } else {
                     include('./pages/not-found.php');

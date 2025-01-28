@@ -1,8 +1,5 @@
 <?php
 
-//Later Create Module For Checking Credentials
-$redirect_link = "../../index.php?page=schedule-templates";
-
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 
     //Set Response to 405 : Method Not Allowed
@@ -37,11 +34,14 @@ $insert_item_query = "INSERT INTO schedule_template_item
 $sth = $conn->prepare($insert_item_query);
 
 foreach ($schedules as $schedule) {
+    $startTime = $schedule['startTime'] == '' ? null : $schedule['startTime'];
+    $endTime = $schedule['endTime'] == '' ? null : $schedule['endTime'];
+
     $sth->bindParam(1, $templateId, PDO::PARAM_INT);
     $sth->bindParam(2, $schedule['task'], PDO::PARAM_STR);
     $sth->bindParam(3, $schedule['totalTime'], PDO::PARAM_INT);
-    $sth->bindParam(4, $schedule['startTime'], PDO::PARAM_STR);
-    $sth->bindParam(5, $schedule['endTime'], PDO::PARAM_STR);
+    $sth->bindParam(4, $startTime, PDO::PARAM_STR);
+    $sth->bindParam(5, $endTime, PDO::PARAM_STR);
 
     try {
         $sth->execute();
@@ -68,6 +68,7 @@ try {
 
 // Success response
 http_response_code(201); // Created
+header('Content-Type: application/json');
 echo json_encode(['message' => 'Schedule items created successfully.']);
 
 $conn = null; // Close the database connection

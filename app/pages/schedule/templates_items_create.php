@@ -56,7 +56,7 @@ $templates_res = $sth->fetch();
             </div>
 
             <div class="card-body">
-                <form action="./controller/templates/template_create.php" id="mainForm" method="">
+                <form action="" id="mainForm" method="">
                     <div class="col-6">
                         <div class="form-group">
                             <label for="name">Template Name</label>

@@ -50,10 +50,20 @@
                       <a href=" #" class="nav-link <?php if ($page == 'schedule-templates') echo 'active'; ?>">
                       <i class="nav-icon fas fa-table"></i>
                       <p>
-                          Schedules
+                          Shipment
                           <i class="right fas fa-angle-left"></i>
                       </p>
                       </a>
+                      <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                              <a href="./index.php?page=shipment" class="nav-link <?php
+                                                                                    if ($page == 'shipment') echo 'active';
+                                                                                    ?>">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Shipment</p>
+                              </a>
+                          </li>
+                      </ul>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
                               <a href="./index.php?page=schedule-templates" class="nav-link <?php
@@ -65,81 +75,6 @@
                           </li>
                       </ul>
                   </li>
-
-
-                  <!-- TABLE -->
-                  <li class="nav-item <?php if ($page == 'data-table') echo 'menu-open'; ?>"">
-                      <a href=" #" class="nav-link <?php if ($page == 'data-table') echo 'active'; ?>">
-                      <i class="nav-icon fas fa-table"></i>
-                      <p>
-                          Tables
-                          <i class="right fas fa-angle-left"></i>
-                      </p>
-                      </a>
-                      <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="./index.php?page=data-table" class="nav-link <?php
-                                                                                    if ($page == 'data-table') echo 'active';
-                                                                                    ?>">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Data Table</p>
-                              </a>
-                          </li>
-                      </ul>
-                  </li>
-
-                  <!-- FORMS -->
-                  <li class="nav-item <?php if ($page == 'form-basic') echo 'menu-open'; ?>">
-                      <a href=" #" class="nav-link <?php if ($page == 'form-basic') echo 'active'; ?>">
-                          <i class="nav-icon fas fa-edit"></i>
-                          <p>
-                              Forms
-                              <i class="right fas fa-angle-left"></i>
-                          </p>
-                      </a>
-                      <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="./index.php?page=form-basic" class="nav-link <?php
-                                                                                    if ($page == 'form-basic') echo 'active';;
-                                                                                    ?>">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Form Basic</p>
-                              </a>
-                          </li>
-                      </ul>
-                  </li>
-
-                  <!-- Chart -->
-                  <li class="nav-item <?php if ($page == 'chart-basic' || $page == 'chart-inline') echo 'menu-open'; ?>">
-                      <a href=" #" class="nav-link <?php if ($page == 'chart-basic') echo 'active'; ?>">
-                          <i class="nav-icon fas fa-chart-pie"></i>
-                          <p>
-                              Chart
-                              <i class="right fas fa-angle-left"></i>
-                          </p>
-                      </a>
-                      <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="./index.php?page=chart-basic" class="nav-link <?php
-                                                                                        if ($page == 'chart-basic') echo 'active';
-                                                                                        ?>">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Chart Basic</p>
-                              </a>
-                          </li>
-                      </ul>
-                      <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="./index.php?page=chart-inline" class="nav-link <?php
-                                                                                        if ($page == 'chart-inline') echo 'active';
-                                                                                        ?>">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Chart Inline</p>
-                              </a>
-                          </li>
-                      </ul>
-                  </li>
-                  
               </ul>
           </nav>
           <!-- /.sidebar-menu -->
