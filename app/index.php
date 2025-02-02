@@ -48,6 +48,11 @@
                 } else if ($page == 'shipment-detail') {
                     include('./pages/shipment/shipment-details.php');
                 }
+                // DAILY SHIPMENT
+                else if ($page == 'daily-shipment') {
+                    include('./pages/daily-shipment/daily-shipment.php');
+                }
+
                 // USER
                 else if ($page == 'user') {
                     include('./pages/user/users.php');
