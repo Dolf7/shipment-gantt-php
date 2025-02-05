@@ -4,7 +4,6 @@
 require_once('./pages/shipment/shipment_objects.php');
 include('../conf/mysql-connect-ShipmentSchedule.php');
 
-
 ?>
 
 <!-- Content Header -->
@@ -47,7 +46,7 @@ include('../conf/mysql-connect-ShipmentSchedule.php');
                             <label for="name">Choose Shipment Date</label>
                             <input type="date" name="shipmentDate" id="shipment-date" class="form-control">
                         </div>
-                        <button type="button" id="select-date" class="btn btn-primary" onclick="getShipments()"> SELECT
+                        <button type="button" id="select-date" class="btn btn-primary" onclick="dateselected()"> SELECT
                         </button>
                     </div class="col-6">
                 </form>
@@ -59,12 +58,27 @@ include('../conf/mysql-connect-ShipmentSchedule.php');
 
 
 <script>
+    function dateselected() {
+        const shipmentDate = document.getElementById('shipment-date').value;
+        if (shipmentDate) {
+            window.location.href = window.location.pathname + '?page=daily-shipment&date=' + shipmentDate;
+        } else {
+            alert("Please select a date.");
+        }
+    }
+
+    function getDateGetParams() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const dateParam = urlParams.get('date');
+        return dateParam;
+    }
+
+    document.addEventListener('DOMContentLoaded', getShipments);
+
     function getShipments() {
-        const shipmentDate = document.getElementById('shipment-date');
-        const shipmentDateVal = shipmentDate.value;
+        const shipmentDateVal = getDateGetParams();
 
         if (shipmentDateVal == undefined || shipmentDateVal == null) {
-            alert("Selected Tempalte Item is Undefined || NULL " + shipmentDateVal);
             return;
         }
 
