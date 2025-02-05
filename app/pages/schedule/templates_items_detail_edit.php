@@ -227,7 +227,7 @@ $templates_items = $sth2->fetchAll();
                 if (response.ok) {
                     alert('Template Schedules Updated');
 
-                    window.location.href = '<?php echo $full_url ?>/gantt/app?page=schedule-templates';
+                    window.location.href = window.location.pathname + '?page=schedule-templates';
                     // Handle successful submission (e.g., display success message, redirect)
                 } else {
                     alert("Failed To Create Object, Please Try Again or Contact The Administrator");

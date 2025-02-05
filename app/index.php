@@ -29,9 +29,7 @@
             if (isset($page)) {
                 if ($page == 'profile') {
                     include('./pages/profile.php');
-                } else if ($page == 'gantt-test') {
-                    include('./pages/gantt-test.php');
-                }
+                } 
                 // TEMPLATES
                 else if ($page == 'schedule-templates') {
                     include('./pages/schedule/templates.php');
