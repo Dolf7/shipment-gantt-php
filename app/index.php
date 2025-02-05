@@ -29,9 +29,7 @@
             if (isset($page)) {
                 if ($page == 'profile') {
                     include('./pages/profile.php');
-                } else if ($page == 'gantt-test') {
-                    include('./pages/gantt-test.php');
-                }
+                } 
                 // TEMPLATES
                 else if ($page == 'schedule-templates') {
                     include('./pages/schedule/templates.php');
@@ -48,6 +46,11 @@
                 } else if ($page == 'shipment-detail') {
                     include('./pages/shipment/shipment-details.php');
                 }
+                // DAILY SHIPMENT
+                else if ($page == 'daily-shipment') {
+                    include('./pages/daily-shipment/daily-shipment.php');
+                }
+
                 // USER
                 else if ($page == 'user') {
                     include('./pages/user/users.php');

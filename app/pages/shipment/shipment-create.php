@@ -276,7 +276,7 @@ $templates_res = $sth->fetchAll();
             return;
         }
 
-        window.location.href = '<?php echo $full_url ?>/gantt/app?page=shipment';
+        window.location.href = window.location.pathname + '?page=shipment';
         return;
     }
 
@@ -304,7 +304,7 @@ $templates_res = $sth->fetchAll();
             .then(response => {
                 if (response.ok) {
                     alert('Shipment Created');
-                    window.location.href = '<?php echo $full_url ?>/gantt/app?page=shipment';
+                    window.location.href = window.location.pathname + '?page=shipment';
                     return true;
                 } else {
                     alert("Failed To Create Object, Please Try Again or Contact The Administrator");

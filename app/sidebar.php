@@ -56,6 +56,16 @@
                       </a>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
+                              <a href="./index.php?page=daily-shipment" class="nav-link <?php
+                                                                                        if ($page == 'daily-shipment') echo 'active';
+                                                                                        ?>">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Daily Shipment</p>
+                              </a>
+                          </li>
+                      </ul>
+                      <ul class="nav nav-treeview">
+                          <li class="nav-item">
                               <a href="./index.php?page=shipment" class="nav-link <?php
                                                                                     if ($page == 'shipment') echo 'active';
                                                                                     ?>">

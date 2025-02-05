@@ -185,7 +185,6 @@ $templates_res = $sth->fetch();
 
         console.log(dataToSend);
 
-        // const url = '<?php echo $full_url ?>/gantt/app/controller/templates/templa te_create.php';
         fetch('./controller/templates/template_item_create.php', {
                 method: 'POST',
                 headers: {
@@ -197,7 +196,7 @@ $templates_res = $sth->fetch();
                 if (response.ok) {
                     alert('Template Schedules Created');
 
-                    window.location.href = '<?php echo $full_url ?>/gantt/app?page=schedule-templates';
+                    window.location.href = window.location.pathname + '?page=schedule-templates';
                     // Handle successful submission (e.g., display success message, redirect)
                 } else {
                     alert("Failed To Create Object, Please Try Again or Contact The Administrator");

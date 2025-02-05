@@ -235,7 +235,7 @@ $scheduleDate = $templates_res[0]['scheduleDate'];
             return;
         }
 
-        window.location.href = '<?php echo $full_url ?>/gantt/app?page=shipment';
+        window.location.href = window.location.pathname + '?page=shipment';
         return;
     }
 
