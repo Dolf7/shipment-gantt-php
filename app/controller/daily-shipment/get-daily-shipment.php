@@ -26,10 +26,12 @@ if (!preg_match($dateRegex, $shipmentDate)) {
 include('../../../conf/mysql-connect-ShipmentSchedule.php');
 
 $query_get_templates_item =
-    "SELECT a.scheduleDate, a.name, c.item , b.durationMinute, b.startTime, b.endTime FROM `schedule_schedules` as a 
+    "SELECT a.scheduleDate, a.name, c.item , b.durationMinute, b.startTime, b.endTime 
+        FROM `schedule_schedules` as a 
         JOIN schedule_schedules_item as b on b.schedulesid = a.id
         JOIN schedule_template_item as c on b.templateitemid = c.id
-        WHERE scheduleDate = :shipmentDate";
+        WHERE scheduleDate = :shipmentDate
+        ";
 
 $stmt = $conn->prepare($query_get_templates_item);
 $stmt->bindParam(':shipmentDate', $shipmentDate, PDO::PARAM_STR);
