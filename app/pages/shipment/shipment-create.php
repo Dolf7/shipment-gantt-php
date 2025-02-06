@@ -5,7 +5,7 @@ $host = $_SERVER['HTTP_HOST'];
 $full_url = $protocol . $host;
 
 require_once('./pages/schedule/schedule_objects.php');
-include('../conf/mysql-connect-ShipmentSchedule.php');
+include('../conf/mssql-connect-ShipmentSchedule.php');
 
 ///Query for Get All Templates
 $query_get_templates = "SELECT * FROM schedule_template";
@@ -189,8 +189,10 @@ $templates_res = $sth->fetchAll();
 
         const startTime = data.FixStartTime ?? null;
         const startTimeDisabled = startTime != null;
+        const formattedStartTime = startTime ? startTime.substring(0, 5) : null;
 
         const endTime = data.FixEndTime ?? null
+        const formattedEndTime = endTime ? endTime.substring(0, 5) : null;
         const endTimeDisabled = endTime != null;
 
         const objectFields = document.getElementById('schedules-row');
@@ -223,7 +225,7 @@ $templates_res = $sth->fetchAll();
                     <div class="form-group">
                         <input type="time" name="startTime-${objectFields.children.length + 1}" 
                         id="startTime-${objectFields.children.length + 1}" class="form-control"
-                        value="${startTime}"  ${startTimeDisabled ? 'disabled' : ''}>
+                        value="${formattedStartTime}"  ${startTimeDisabled ? 'disabled' : ''}>
                     </div>
                 </div>
             </div><!-- /.col -->
@@ -232,7 +234,7 @@ $templates_res = $sth->fetchAll();
                     <div class="form-group">
                         <input type="time" name="endTime-${objectFields.children.length + 1}" 
                         id="endTime-${objectFields.children.length + 1}" class="form-control"
-                        value="${endTime}" ${endTimeDisabled ? 'readonly' : ''}>
+                        value="${formattedEndTime}" ${endTimeDisabled ? 'readonly' : ''}>
                     </div>
                 </div>
             </div>
@@ -272,6 +274,7 @@ $templates_res = $sth->fetchAll();
             scheduleItem: shipmentData
         }
 
+        console.log(fullData);
         if (!sentData(fullData)) {
             return;
         }

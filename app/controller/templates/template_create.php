@@ -27,7 +27,7 @@ if (!isset($_POST['name'])) {
     die();
 }
 
-include('../../../conf/mysql-connect-ShipmentSchedule.php');
+include('../../../conf/mssql-connect-ShipmentSchedule.php');
 
 $name = $_POST['name'];
 
@@ -48,7 +48,7 @@ try {
 }
 
 echo "<br>$name";
-$query_get_id_template = "SELECT * FROM schedule_template WHERE name=:name LIMIT 1";
+$query_get_id_template = "SELECT TOP(1) * FROM schedule_template WHERE name=:name";
 
 $sth2  = $conn->prepare($query_get_id_template);
 $sth2->bindParam(":name", $name, PDO::PARAM_STR);

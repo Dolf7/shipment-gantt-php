@@ -2,7 +2,7 @@
 
 //Tread include the like, this file in app/index.html file 
 require_once('./pages/shipment/shipment_objects.php');
-include('../conf/mysql-connect-ShipmentSchedule.php');
+include('../conf/mssql-connect-ShipmentSchedule.php');
 
 ///Query for Get All Templates
 $query_get_templates = "SELECT * FROM schedule_schedules";

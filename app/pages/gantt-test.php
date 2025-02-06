@@ -5,8 +5,6 @@
 <div id="chart_div" style="border: 2px solid red;"></div>
 <div id="timeline" style="height: 200px; padding:0px 10px"></div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
     google.charts.load('current', {
         'packages': ['timeline']

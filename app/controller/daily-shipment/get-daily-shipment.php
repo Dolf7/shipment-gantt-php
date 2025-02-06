@@ -23,11 +23,11 @@ if (!preg_match($dateRegex, $shipmentDate)) {
     die();
 }
 
-include('../../../conf/mysql-connect-ShipmentSchedule.php');
+include('../../../conf/mssql-connect-ShipmentSchedule.php');
 
 $query_get_templates_item =
     "SELECT a.scheduleDate, a.name, c.item , b.durationMinute, b.startTime, b.endTime 
-        FROM `schedule_schedules` as a 
+        FROM schedule_schedules as a 
         JOIN schedule_schedules_item as b on b.schedulesid = a.id
         JOIN schedule_template_item as c on b.templateitemid = c.id
         WHERE scheduleDate = :shipmentDate

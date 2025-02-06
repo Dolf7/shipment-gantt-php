@@ -25,7 +25,7 @@ if (!isset($inputData) || !isset($templateName) || !isset($schedules) || !isset(
     die();
 }
 
-include('../../../conf/mysql-connect-ShipmentSchedule.php');
+include('../../../conf/mssql-connect-ShipmentSchedule.php');
 
 $insert_item_query = "INSERT INTO schedule_template_item 
         (templateid, item, FixDurationMinute, FixStartTime, FixEndTime) 

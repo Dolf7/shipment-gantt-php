@@ -1,65 +1,84 @@
--- Create the database
-CREATE DATABASE ShipmentSchedule;
+-- Start by creating the database
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'ShipmentOnDelivery')
+BEGIN
+    CREATE DATABASE ShipmentOnDelivery;
+END
+GO
 
--- Use the database
-USE ShipmentSchedule;
+USE ShipmentOnDelivery;
+GO
 
--- Create the schedule schema
-CREATE SCHEMA schedule;
+-- Transaction block for creating tables
+BEGIN TRANSACTION;
 
--- Create the user schema
-CREATE SCHEMA
-user;
+-- Create schedule_template table
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'schedule_template')
+BEGIN
+    CREATE TABLE schedule_template (
+        id INT IDENTITY(1,1) PRIMARY KEY,
+        name NVARCHAR(255) NOT NULL
+    );
+END
+GO
 
--- Create tables in the schedule schema
-CREATE TABLE schedule.template
-(
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
-);
+-- Create schedule_template_item table
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'schedule_template_item')
+BEGIN
+    CREATE TABLE schedule_template_item (
+        id INT IDENTITY(1,1) PRIMARY KEY,
+        templateid INT,
+        item NVARCHAR(255) NOT NULL,
+        FixDurationMinute BIGINT,
+        FixStartTime TIME,
+        FixEndTime TIME,
+        FOREIGN KEY (templateid) REFERENCES schedule_template(id)
+    );
+END
+GO
 
-CREATE TABLE schedule.template_item
-(
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    templateid INT,
-    item VARCHAR(255) NOT NULL,
-    FixDurationMinute BIGINT,
-    FixStartTime TIME,
-    FixEndTime TIME,
-    FOREIGN KEY (templateid) REFERENCES schedule.schedule_template(id)
-);
+-- Create schedule_schedules table
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'schedule_schedules')
+BEGIN
+    CREATE TABLE schedule_schedules (
+        id INT IDENTITY(1,1) PRIMARY KEY,
+        name NVARCHAR(255),
+        scheduleDate DATE,
+        templateid INT,
+        FOREIGN KEY (templateid) REFERENCES schedule_template(id)
+    );
+END
+GO
 
-CREATE TABLE schedule.schedules
-(
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    scheduleDate DATE,
-    templateid INT,
-    FOREIGN KEY (templateid) REFERENCES schedule.schedule_template(id)
-);
+-- Create schedule_schedules_item table
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'schedule_schedules_item')
+BEGIN
+    CREATE TABLE schedule_schedules_item (
+        id INT IDENTITY(1,1) PRIMARY KEY,
+        schedulesid INT,
+        templateitemid INT,
+        durationMinute BIGINT,
+        startTime TIME,
+        endTime TIME,
+        FOREIGN KEY (schedulesid) REFERENCES schedule_schedules(id),
+        FOREIGN KEY (templateitemid) REFERENCES schedule_template_item(id)
+    );
+END
+GO
 
-CREATE TABLE schedule.schedules_item
-(
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    schedulesid INT,
-    templateitemid INT,
-    durationMinute BIGINT,
-    startTime TIME,
-    endTime TIME,
-    FOREIGN KEY (schedulesid) REFERENCES schedule.schedule_schedules(id),
-    FOREIGN KEY (templateitemid) REFERENCES schedule.schedule_template_item(id)
-);
+-- Create user_users table
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'user_users')
+BEGIN
+    CREATE TABLE user_users (
+        id BIGINT IDENTITY(1,1) PRIMARY KEY,
+        email NVARCHAR(255) NOT NULL,
+        username NVARCHAR(255) NOT NULL,
+        realname NVARCHAR(255) NOT NULL,
+        password NVARCHAR(255) NOT NULL,
+        isAdmin BIT NOT NULL,
+        isActive BIT NOT NULL
+    );
+END
+GO
 
--- Create the user table in the user schema
-CREATE TABLE user.users
-(
-    id BIGINT IDENTITY(1,1) PRIMARY KEY,
-    email VARCHAR(255) NOT NULL,
-    username VARCHAR(255) NOT NULL,
-    realname VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    isAdmin BIT NOT NULL,
-    isActive BIT NOT NULL
-);
-
--- Commit the transaction
 COMMIT TRANSACTION;
+GO
