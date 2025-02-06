@@ -3,8 +3,7 @@
 //Later Create Module For Checking Credentials
 $redirect_link = "../../index.php?page=s";
 
-if ($_SERVER['REQUEST_METHOD'] != 'PUT') {
-
+if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     //Set Response to 405 : Method Not Allowed
     http_response_code(405);
 
@@ -35,7 +34,7 @@ if (!isset($scheduleDate) || !isset($scheduleName) || !isset($templateId) || !is
     die();
 }
 
-include('../../../conf/mysql-connect-ShipmentSchedule.php');
+include('../../../conf/mssql-connect-ShipmentSchedule.php');
 
 //Update Shipment
 $insert_shipment_query = "UPDATE schedule_schedules SET

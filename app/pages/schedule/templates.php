@@ -2,7 +2,7 @@
 
 //Tread include the like, this file in app/index.html file 
 require_once('./pages/schedule/schedule_objects.php');
-include('../conf/mysql-connect-ShipmentSchedule.php');
+include('../conf/mssql-connect-ShipmentSchedule.php');
 
 ///Query for Get All Templates
 $query_get_templates = "SELECT * FROM schedule_template";
@@ -101,8 +101,6 @@ $templates_res = $sth->fetchAll(PDO::FETCH_CLASS, "schedule_template");
     </div>
 </section>
 <!-- Contents -->
-
-
 
 <!-- jQuery -->
 <script src="../plugins/jquery/jquery.min.js"></script>

@@ -13,6 +13,12 @@ if (!isset($_GET['id'])) {
     echo "<script>history.back()</script>";
     die();
 }
+
+function get_first_six_chars($string)
+{
+    return substr($string, 0, 8);
+}
+
 $shipment_id = $_GET['id'];
 
 $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
@@ -20,7 +26,7 @@ $host = $_SERVER['HTTP_HOST'];
 $full_url = $protocol . $host;
 
 require_once('./pages/schedule/schedule_objects.php');
-include('../conf/mysql-connect-ShipmentSchedule.php');
+include('../conf/mssql-connect-ShipmentSchedule.php');
 
 ///Query for Get All Templates
 $query_get_items = "SELECT st.id AS templateId
@@ -170,7 +176,7 @@ $scheduleDate = $templates_res[0]['scheduleDate'];
                                                 <div class="form-group">
                                                     <input type="time" name="startTime-<?php echo ($key + 1) ?>"
                                                         id="startTime-<?php echo ($key + 1) ?>" class="form-control"
-                                                        value="<?php echo $item['startTime'] ?>">
+                                                        value="<?php echo get_first_six_chars($item['startTime']) ?>">
                                                 </div>
                                             </div>
                                         </div><!-- /.col -->
@@ -179,12 +185,13 @@ $scheduleDate = $templates_res[0]['scheduleDate'];
                                                 <div class="form-group">
                                                     <input type="time" name="endTime-<?php echo ($key + 1) ?>"
                                                         id="endTime-<?php echo ($key + 1) ?>" class="form-control"
-                                                        value="<?php echo $item['endTime'] ?>">
+                                                        value="<?php echo get_first_six_chars($item['endTime']) ?>">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                <?php } ?>
+                                <?php
+                                } ?>
                             </div>
                             <div class="col-md-6">
                                 <button type="button" class="btn btn-primary" id="postObject" onclick="createAndSentData()">Submit</button>
@@ -255,7 +262,7 @@ $scheduleDate = $templates_res[0]['scheduleDate'];
         url = './controller/shipment/update_shipment.php';
 
         fetch(url, {
-                method: 'PUT',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },

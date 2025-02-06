@@ -7,10 +7,21 @@ function throw_bad_request($e)
     die();
 }
 
-if (!isset($_GET['id'])) {
-    http_response_code(400);
-    echo "<script>alert('400 : Bad Request')</script>";
+function throw_internal_server_error($e)
+{
+    http_response_code(500);
+    echo "<script>alert('500 : Internal Server Error - $e')</script>";
     echo "<script>history.back()</script>";
+    die();
+}
+
+function get_first_six_chars($string)
+{
+    return substr($string, 0, 8);
+}
+
+if (!isset($_GET['id'])) {
+    throw_bad_request("Params Id missing");
     die();
 }
 $get_id = $_GET['id'];
@@ -21,7 +32,7 @@ $full_url = $protocol . $host;
 
 //Tread include the like, this file in app/index.html file 
 require_once('./pages/schedule/schedule_objects.php');
-include('../conf/mysql-connect-ShipmentSchedule.php');
+include('../conf/mssql-connect-ShipmentSchedule.php');
 
 ///Query for Get Templates
 $query_get_templates = "SELECT * FROM schedule_template WHERE id=:id";
@@ -31,8 +42,9 @@ $sth->bindParam(':id', $get_id, PDO::PARAM_INT);
 try {
     $sth->execute();
 } catch (Exception $e) {
-    throw_bad_request($e->getMessage());
+    throw_internal_server_error($e->getMessage());
 }
+$templates_res = $sth->fetch();
 
 $query_get_templates_item = "SELECT * FROM schedule_template_item WHERE templateid=:id";
 
@@ -42,9 +54,8 @@ $sth2->bindParam(':id', $get_id, PDO::PARAM_INT);
 try {
     $sth2->execute();
 } catch (Exception $e) {
-    throw_bad_request($e->getMessage());
+    throw_internal_server_error($e->getMessage());
 }
-$templates_res = $sth->fetch();
 $templates_items = $sth2->fetchAll();
 
 ?>
@@ -114,7 +125,7 @@ $templates_items = $sth2->fetchAll();
                                     <div class="form-group">
                                         <div class="form-group">
                                             <label for="startTime">Fix Start Time</label>
-                                            <input type="time" name="startTime-<?php echo $key + 1 ?>" id="startTime-<?php echo $key + 1 ?>" class="form-control" value="<?php echo $schedule['FixStartTime'] ?>">
+                                            <input type="time" name="startTime-<?php echo $key + 1 ?>" id="startTime-<?php echo $key + 1 ?>" class="form-control" value="<?php echo get_first_six_chars($schedule['FixStartTime']) ?>">
                                         </div>
                                     </div>
                                 </div><!-- /.col -->
@@ -122,7 +133,7 @@ $templates_items = $sth2->fetchAll();
                                     <div class="form-group">
                                         <div class="form-group">
                                             <label for="endtime">Fix End Time</label>
-                                            <input type="time" name="endTime-<?php echo $key + 1 ?>" id="endTime-<?php echo $key + 1 ?>" class="form-control" value="<?php echo $schedule['FixEndTime'] ?>">
+                                            <input type="time" name="endTime-<?php echo $key + 1 ?>" id="endTime-<?php echo $key + 1 ?>" class="form-control" value="<?php echo get_first_six_chars($schedule['FixEndTime']) ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -217,7 +228,7 @@ $templates_items = $sth2->fetchAll();
         console.log(dataToSend);
 
         fetch('./controller/templates/template_item_update.php', {
-                method: 'PUT',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },

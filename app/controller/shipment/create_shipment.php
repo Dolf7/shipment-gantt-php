@@ -34,7 +34,7 @@ if (!isset($scheduleDate) || !isset($scheduleName) || !isset($templateId) || !is
     die();
 }
 
-include('../../../conf/mysql-connect-ShipmentSchedule.php');
+include('../../../conf/mssql-connect-ShipmentSchedule.php');
 
 //Create shipment
 $insert_shipment_query = "INSERT INTO schedule_schedules (scheduleDate, templateId, name) 
@@ -48,7 +48,19 @@ $stmt1->bindParam(3, $scheduleName, PDO::PARAM_STR);
 
 try {
     $stmt1->execute();
-    $last_id = $conn->lastInsertId();
+} catch (Exception $ex) {
+    http_response_code(500); // Internal Server Error
+    echo json_encode(['error' => 'Database error: ' . $ex->getMessage()]);
+    exit;
+}
+
+$get_last_insertedId = "SELECT TOP(1) * FROM schedule_schedules ORDER BY id DESC";
+
+$sth = $conn->prepare($get_last_insertedId);
+try {
+    $sth->execute();
+    $res_id = $sth->fetch();
+    $last_id = $res_id['id'];
 } catch (Exception $ex) {
     http_response_code(500); // Internal Server Error
     echo json_encode(['error' => 'Database error: ' . $ex->getMessage()]);

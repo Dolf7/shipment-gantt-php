@@ -2,8 +2,7 @@
 
 //Tread include the like, this file in app/index.html file 
 require_once('./pages/shipment/shipment_objects.php');
-include('../conf/mysql-connect-ShipmentSchedule.php');
-
+include('../conf/mssql-connect-ShipmentSchedule.php');
 ?>
 
 <!-- Content Header -->
@@ -82,8 +81,6 @@ include('../conf/mysql-connect-ShipmentSchedule.php');
             return;
         }
 
-        console.log(shipmentDateVal);
-
         url = 'controller/daily-shipment/get-daily-shipment.php?shipmentDate=' + shipmentDateVal;
 
         fetch(url, {
@@ -118,6 +115,7 @@ include('../conf/mysql-connect-ShipmentSchedule.php');
             var chart = new google.visualization.Timeline(container);
             var dataTable = new google.visualization.DataTable();
 
+
             dataTable.addColumn({
                 type: 'string',
                 id: 'Item Name'
@@ -134,8 +132,6 @@ include('../conf/mysql-connect-ShipmentSchedule.php');
                 type: 'date',
                 id: 'End'
             });
-
-            console.log(data);
 
             var dateParts = date.split('-');
             var year = parseInt(dateParts[0]);

@@ -22,7 +22,7 @@ if (!is_numeric($id)) {
     die();
 }
 
-include('../../../conf/mysql-connect-ShipmentSchedule.php');
+include('../../../conf/mssql-connect-ShipmentSchedule.php');
 
 
 $query_get_templates_item = "SELECT * FROM schedule_template_item WHERE templateid=:id";

@@ -28,7 +28,7 @@ if (!isset($_GET['id'])) {
     die();
 }
 
-include('../../../conf/mysql-connect-ShipmentSchedule.php');
+include('../../../conf/mssql-connect-ShipmentSchedule.php');
 
 $id = $_GET['id'];
 

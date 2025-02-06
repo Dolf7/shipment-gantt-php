@@ -13,7 +13,7 @@ $full_url = $protocol . $host;
 
 //Tread include the like, this file in app/index.html file 
 require_once('./pages/schedule/schedule_objects.php');
-include('../conf/mysql-connect-ShipmentSchedule.php');
+include('../conf/mssql-connect-ShipmentSchedule.php');
 
 ///Query for Get All Templates
 $query_get_templates = "SELECT * FROM schedule_template WHERE id=:id";
@@ -79,7 +79,7 @@ $templates_res = $sth->fetch();
                                 <div class="form-group">
                                     <div class="form-group">
                                         <label for="time">Fix Time (Minute)</label>
-                                        <input type="number" name="totalTime-1" id="totaltime-1" class="form-control" value="">
+                                        <input type="number" name="totalTime-1" id="totaltime-1" class="form-control" value="0">
                                     </div>
                                 </div>
                             </div><!-- /.col -->
@@ -136,7 +136,7 @@ $templates_res = $sth->fetch();
                 <div class="form-group">
                     <div class="form-group">
                         <label for="time">Fix Time (Minute)</label>
-                        <input type="number" name="totalTime-${objectFields.children.length + 1}" id="totaltime-${objectFields.children.length + 1}" class="form-control">
+                        <input type="number" name="totalTime-${objectFields.children.length + 1}" id="totaltime-${objectFields.children.length + 1}" value="0" class="form-control">
                     </div>
                 </div>
             </div><!-- /.col -->
@@ -174,8 +174,17 @@ $templates_res = $sth->fetch();
                 startTime: row.querySelector(`[name="startTime-${index + 1}"]`).value,
                 endTime: row.querySelector(`[name="endTime-${index + 1}"]`).value,
             };
+
+            if (!scheduleItem.task || !scheduleItem.totalTime) {
+                alert('Please fill out all fields for each schedule item. (If Fix Time is Not Defined then fill 0)');
+                throw new Error('Incomplete schedule item');
+                return;
+            }
+
             scheduleData.push(scheduleItem);
         });
+
+
 
         const dataToSend = {
             templateName: formData.get('templateName'),
