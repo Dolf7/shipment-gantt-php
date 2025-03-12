@@ -87,7 +87,7 @@ $templates_res = $sth->fetch();
                                 <div class="form-group">
                                     <div class="form-group">
                                         <label for="name">Fix Start Time</label>
-                                        <input type="time" name="startTime-1" id="startTime" class="form-control" value="">
+                                        <input type="time" name="startTime-1" id="startTime-1" class="form-control" value="">
                                     </div>
                                 </div>
                             </div><!-- /.col -->
@@ -95,7 +95,7 @@ $templates_res = $sth->fetch();
                                 <div class="form-group">
                                     <div class="form-group">
                                         <label for="name">Fix End Time</label>
-                                        <input type="time" name="endTime-1" id="endTime" class="form-control" value="">
+                                        <input type="time" name="endTime-1" id="endTime-1" class="form-control" value="">
                                     </div>
                                 </div>
                             </div>
@@ -115,6 +115,8 @@ $templates_res = $sth->fetch();
     </div>
 </section>
 
+
+<script src="./lib/time-calibrator.js"></script>
 <script>
     function addField() {
         const objectFields = document.getElementById('schedules-row');
@@ -160,6 +162,37 @@ $templates_res = $sth->fetch();
 
         objectFields.appendChild(newField);
     }
+
+
+    document.getElementById('mainForm').addEventListener('input', function(event) {
+        const target = event.target;
+        const fieldIndex = target.name.split('-')[1];
+        const totalTimeField = document.getElementById(`totaltime-${fieldIndex}`);
+        const startTimeField = document.getElementById(`startTime-${fieldIndex}`);
+        const endTimeField = document.getElementById(`endTime-${fieldIndex}`);
+
+        console.log(`${totalTimeField} | ${startTimeField} | ${endTimeField}`);
+
+        if (target === totalTimeField) {
+            if (startTimeField.value) {
+                endTimeField.value = calculateEndTime(startTimeField.value, target.value);
+            } else if (endTimeField.value) {
+                startTimeField.value = calculateStartTime(target.value, endTimeField.value);
+            }
+        } else if (target === startTimeField) {
+            if (totalTimeField.value) {
+                endTimeField.value = calculateEndTime(target.value, totalTimeField.value);
+            } else if (endTimeField.value) {
+                totalTimeField.value = calculateDuration(target.value, endTimeField.value);
+            }
+        } else if (target === endTimeField) {
+            if (totalTimeField.value) {
+                startTimeField.value = calculateStartTime(totalTimeField.value, target.value);
+            } else if (startTimeField.value) {
+                totalTimeField.value = calculateDuration(startTimeField.value, target.value);
+            }
+        }
+    });
 
     function submitForm() {
         const form = document.getElementById('mainForm');

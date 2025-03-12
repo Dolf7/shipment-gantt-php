@@ -204,6 +204,9 @@ $scheduleDate = $templates_res[0]['scheduleDate'];
     </div>
 </section>
 
+
+<!-- Pretend Include like in index.html -->
+<script src="./lib/time-calibrator.js"></script>
 <script>
     function createAndSentData() {
         const form = document.getElementById('mainForm');
@@ -245,6 +248,34 @@ $scheduleDate = $templates_res[0]['scheduleDate'];
         window.location.href = window.location.pathname + '?page=shipment';
         return;
     }
+
+    document.getElementById('mainForm').addEventListener('input', function(event) {
+        const target = event.target;
+        const fieldIndex = target.name.split('-')[1];
+        const totalTimeField = document.getElementById(`totaltime-${fieldIndex}`);
+        const startTimeField = document.getElementById(`startTime-${fieldIndex}`);
+        const endTimeField = document.getElementById(`endTime-${fieldIndex}`);
+
+        if (target === totalTimeField) {
+            if (startTimeField.value) {
+                endTimeField.value = calculateEndTime(startTimeField.value, target.value);
+            } else if (endTimeField.value) {
+                startTimeField.value = calculateStartTime(target.value, endTimeField.value);
+            }
+        } else if (target === startTimeField) {
+            if (totalTimeField.value) {
+                endTimeField.value = calculateEndTime(target.value, totalTimeField.value);
+            } else if (endTimeField.value) {
+                totalTimeField.value = calculateDuration(target.value, endTimeField.value);
+            }
+        } else if (target === endTimeField) {
+            if (totalTimeField.value) {
+                startTimeField.value = calculateStartTime(totalTimeField.value, target.value);
+            } else if (startTimeField.value) {
+                totalTimeField.value = calculateDuration(startTimeField.value, target.value);
+            }
+        }
+    });
 
     function checkData(datas) {
         for (let i = 0; i < datas.length; i++) {

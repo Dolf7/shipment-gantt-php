@@ -122,6 +122,8 @@ $templates_res = $sth->fetchAll();
     </div>
 </section>
 
+<!-- Pretend Include like in index.html -->
+<script src="./lib/time-calibrator.js"></script>
 <script>
     function templateSelected() {
         clearMainForm();
@@ -159,7 +161,6 @@ $templates_res = $sth->fetchAll();
             })
             .then(response => {
                 if (response.ok) {
-                    console.log(response);
                     return response.json();
                 } else {
                     alert("Failed To Select Object, Please Try Again");
@@ -216,7 +217,7 @@ $templates_res = $sth->fetchAll();
                     <div class="form-group">
                         <input type="number" name="totalTime-${objectFields.children.length + 1}" 
                             id="totaltime-${objectFields.children.length + 1}" class="form-control"
-                            value="${duration}" ${durationDisabled ? 'disabled' : ''}>
+                            value="${duration}">
                     </div>
                 </div>
             </div><!-- /.col -->
@@ -225,7 +226,7 @@ $templates_res = $sth->fetchAll();
                     <div class="form-group">
                         <input type="time" name="startTime-${objectFields.children.length + 1}" 
                         id="startTime-${objectFields.children.length + 1}" class="form-control"
-                        value="${formattedStartTime}"  ${startTimeDisabled ? 'disabled' : ''}>
+                        value="${formattedStartTime}">
                     </div>
                 </div>
             </div><!-- /.col -->
@@ -234,7 +235,7 @@ $templates_res = $sth->fetchAll();
                     <div class="form-group">
                         <input type="time" name="endTime-${objectFields.children.length + 1}" 
                         id="endTime-${objectFields.children.length + 1}" class="form-control"
-                        value="${formattedEndTime}" ${endTimeDisabled ? 'readonly' : ''}>
+                        value="${formattedEndTime}">
                     </div>
                 </div>
             </div>
@@ -242,6 +243,34 @@ $templates_res = $sth->fetchAll();
 
         objectFields.appendChild(newField);
     }
+
+    document.getElementById('mainForm').addEventListener('input', function(event) {
+        const target = event.target;
+        const fieldIndex = target.name.split('-')[1];
+        const totalTimeField = document.getElementById(`totaltime-${fieldIndex}`);
+        const startTimeField = document.getElementById(`startTime-${fieldIndex}`);
+        const endTimeField = document.getElementById(`endTime-${fieldIndex}`);
+
+        if (target === totalTimeField) {
+            if (startTimeField.value) {
+                endTimeField.value = calculateEndTime(startTimeField.value, target.value);
+            } else if (endTimeField.value) {
+                startTimeField.value = calculateStartTime(target.value, endTimeField.value);
+            }
+        } else if (target === startTimeField) {
+            if (totalTimeField.value) {
+                endTimeField.value = calculateEndTime(target.value, totalTimeField.value);
+            } else if (endTimeField.value) {
+                totalTimeField.value = calculateDuration(target.value, endTimeField.value);
+            }
+        } else if (target === endTimeField) {
+            if (totalTimeField.value) {
+                startTimeField.value = calculateStartTime(totalTimeField.value, target.value);
+            } else if (startTimeField.value) {
+                totalTimeField.value = calculateDuration(startTimeField.value, target.value);
+            }
+        }
+    });
 
     function createAndSentData() {
         const form = document.getElementById('mainForm');
@@ -274,7 +303,6 @@ $templates_res = $sth->fetchAll();
             scheduleItem: shipmentData
         }
 
-        console.log(fullData);
         if (!sentData(fullData)) {
             return;
         }
