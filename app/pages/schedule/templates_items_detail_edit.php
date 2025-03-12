@@ -254,8 +254,6 @@ $templates_items = $sth2->fetchAll();
             schedules: scheduleData,
         };
 
-        console.log(dataToSend);
-
         fetch('./controller/templates/template_item_update.php', {
                 method: 'POST',
                 headers: {

@@ -289,7 +289,6 @@ $scheduleDate = $templates_res[0]['scheduleDate'];
     }
 
     function sentData(datas) {
-        console.log(datas);
         url = './controller/shipment/update_shipment.php';
 
         fetch(url, {

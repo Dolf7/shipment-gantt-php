@@ -171,8 +171,6 @@ $templates_res = $sth->fetch();
         const startTimeField = document.getElementById(`startTime-${fieldIndex}`);
         const endTimeField = document.getElementById(`endTime-${fieldIndex}`);
 
-        console.log(`${totalTimeField} | ${startTimeField} | ${endTimeField}`);
-
         if (target === totalTimeField) {
             if (startTimeField.value) {
                 endTimeField.value = calculateEndTime(startTimeField.value, target.value);
@@ -224,8 +222,6 @@ $templates_res = $sth->fetch();
             templateId: formData.get('templateId'),
             schedules: scheduleData,
         };
-
-        console.log(dataToSend);
 
         fetch('./controller/templates/template_item_create.php', {
                 method: 'POST',
