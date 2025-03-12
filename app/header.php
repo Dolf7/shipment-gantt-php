@@ -1,4 +1,9 @@
 <?php @$page = $_GET['page']; //it's get a warning in admin profile page 
+
+//Set to No Cache
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 ?>
 
 <!-- Tell the browser to be responsive to screen width -->

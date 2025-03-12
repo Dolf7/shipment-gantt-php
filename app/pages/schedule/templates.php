@@ -1,5 +1,4 @@
 <?php
-
 //Tread include the like, this file in app/index.html file 
 require_once('./pages/schedule/schedule_objects.php');
 include('../conf/mssql-connect-ShipmentSchedule.php');

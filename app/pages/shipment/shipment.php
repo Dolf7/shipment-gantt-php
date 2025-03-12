@@ -5,9 +5,9 @@ require_once('./pages/shipment/shipment_objects.php');
 include('../conf/mssql-connect-ShipmentSchedule.php');
 
 ///Query for Get All Templates
-$query_get_templates = "SELECT * FROM schedule_schedules";
+$query_get_schedules = "SELECT * FROM schedule_schedules ORDER BY Id DESC";
 
-$sth = $conn->prepare($query_get_templates);
+$sth = $conn->prepare($query_get_schedules);
 $sth->execute();
 
 $templates_res = $sth->fetchAll(PDO::FETCH_CLASS, "shipment_schedules");
